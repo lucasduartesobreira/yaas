@@ -1,0 +1,9 @@
+{
+  "name": "express",
+  "version": "0.0.1",
+  "description": "Auth Handler for Express.js",
+  "main": "dist/index.js",
+  "author": "Lucas Duarte Sobreira",
+  "license": "BSD-3-Clause",
+  "private": false
+}
