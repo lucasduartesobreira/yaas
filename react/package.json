@@ -1,0 +1,9 @@
+{
+  "name": "react",
+  "version": "0.0.1",
+  "description": "Auth Hook and Form Builder for React.js",
+  "main": "dist/index.js",
+  "author": "Lucas Duarte Sobreira",
+  "license": "BSD-3-Clause",
+  "private": false
+}
