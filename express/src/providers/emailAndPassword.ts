@@ -17,7 +17,7 @@ type LoginResponse = {
   status: number
   body?: string | Record<PropertyKey, unknown>
 }
-type UserHashedPassword =
+type DatabaseResponse =
   | { success: true; password: string; databaseFailure?: false }
   | { success: false; password: undefined; databaseFailure: boolean }
 

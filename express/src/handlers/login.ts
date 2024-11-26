@@ -23,10 +23,6 @@ type ProvidersBuilt<Providers extends ProvidersName[]> = {
   ) => Promise<LoginResponse>
 }
 
-export type DatabaseResponse =
-  | { success: true; password: string; databaseFailure?: false }
-  | { success: false; password: undefined; databaseFailure: boolean }
-
 export type ProviderHandlerBuilder<
   ProviderOptions extends Record<PropertyKey, unknown>,
 > = (
