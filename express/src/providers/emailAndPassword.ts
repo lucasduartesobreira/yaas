@@ -1,9 +1,9 @@
 import { z } from 'zod'
 import { Algorithm, sign } from 'jsonwebtoken'
 import { compare } from 'bcrypt'
+import { LoginResponse, ProviderHandlerBuilder } from '../handlers/login'
 
 const emailAndPasswordSchema = z.object({
-  type: z.enum(['emailAndPassword']),
   default_fields: z
     .object({
       email: z.string().email(),
@@ -13,32 +13,30 @@ const emailAndPasswordSchema = z.object({
     .or(z.string().min(1)),
 })
 
-type LoginResponse = {
-  status: number
-  body?: string | Record<PropertyKey, unknown>
-}
+type Body = Record<PropertyKey, unknown>
+
 type DatabaseResponse =
   | { success: true; password: string; databaseFailure?: false }
   | { success: false; password: undefined; databaseFailure: boolean }
 
-type Body = { type: 'emailAndPassword' } & Record<PropertyKey, unknown>
-
-const emailAndPasswordLogin = (providerOptions: {
+type EmailAndPasswordOptions = {
   secretOrPrivateKey: string
   expiresIn?: string | number
   algorithm?: Algorithm
   getUserLoginData: (
     email: string,
     username?: string
-  ) => Promise<UserHashedPassword>
-}) => {
+  ) => Promise<DatabaseResponse>
+}
+
+const emailAndPasswordLogin: ProviderHandlerBuilder<EmailAndPasswordOptions> = (
+  providerOptions: EmailAndPasswordOptions
+) => {
   const { secretOrPrivateKey, expiresIn, algorithm, getUserLoginData } =
     providerOptions
-  const builtHandler = async (
-    req: z.infer<typeof emailAndPasswordSchema>
-  ): Promise<LoginResponse> => {
+  const builtHandler = async (req: Body): Promise<LoginResponse> => {
     const { success: successParsingBody, data } =
-      emailAndPasswordSchema.safeParse(req)
+      await emailAndPasswordSchema.safeParseAsync(req)
 
     if (!successParsingBody) {
       return { status: 422 }
