@@ -143,6 +143,7 @@ export class LoginHandlerBuilder<
       }
 
       res.status(422).send(NotFoundProviderErrorMessage)
+      return res
     }
 
     return handler
